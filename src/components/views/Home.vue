@@ -2,21 +2,27 @@
   <div class="container py-4">
     <div class="row">
       <div class="col">
-        <pesquisar-vaga/>
+        <pesquisar-vaga />
+      </div>
+    </div>
+
+    <div class="row mt-5" v-for="(vaga, index) in vagas" :key="index">
+      <div class="col">
+        <vaga v-bind="vaga"/>
       </div>
     </div>
 
     <div class="row mt-5">
       <div class="col-4">
-        <indicador />
+        <indicador titulo="Vagas abertas" indicador="100" bg="bg-dark" color="text-white" />
       </div>
 
       <div class="col-4">
-        <indicador />
+        <indicador titulo="Profissionais cadastrados" indicador="225" bg="bg-dark" color="text-white" />
       </div>
 
       <div class="col-4">
-        <indicador />
+        <indicador titulo="Visitantes online" :indicador="usuariosOnline" bg="bg-light" color="text-dark" />
       </div>
     </div>
   </div>
@@ -25,31 +31,31 @@
 <script>
 import Indicador from '@/components/comuns/Indicador.vue'
 import PesquisarVaga from '@/components/comuns/PesquisarVaga.vue'
+import Vaga from '@/components/comuns/Vaga.vue'
 
 export default {
   name: 'Home',
   components: {
     PesquisarVaga,
-    Indicador
+    Indicador,
+    Vaga
   },
-    activated() {
-    console.log('Componente é ativado')
-    },
-    deactivated() {
-      console.log('Componente é desativado')
-    },
-      beforeUnmount() {
-    console.log('Antes de demonstar/destruir')
-    },
-    unmounted() {
-      console.log('Demonstado/destruído')
-    },
-    created() {
-    console.log('Criado')
-    },
+  data: () => ({
+    usuariosOnline: 0,
+    vagas: []
+  }),
+  methods: {
+    getUsuariosOnline() {
+      this.usuariosOnline = Math.floor(Math.random() * 101)
+    }
+  },
+  created() {
+    setInterval(this.getUsuariosOnline, 5000)
+  },
+  activated() {
+    this.vagas = JSON.parse(localStorage.getItem('vagas'))
+  }
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
