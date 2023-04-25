@@ -1,29 +1,37 @@
 <template>
   <div>
-    <h1>Componente App</h1>
-    <button @click="desmontarComponente()">Desmontar o componente Conteudo</button>
-    <topo-padrao />
-    <conteudo v-if="visibilidade"></conteudo>
+    <vagas-favoritas></vagas-favoritas>
+    <topo-padrao @navegar="component = $event" />
+    <alerta v-if="exibirAlerta"/>
+    <conteudo v-if="visibilidade" :conteudo="component"></conteudo>
   </div>
 </template>
 
 <script>
 import Conteudo from '@/components/layouts/Conteudo.vue'
 import TopoPadrao from '@/components/layouts/TopoPadrao.vue'
+import VagasFavoritas from '@/components/comuns/VagasFavoritas.vue'
+import Alerta from '@/components/comuns/Alerta.vue'
 
 export default {
   name: 'App',
   data: () => ({
-    visibilidade: true
+    visibilidade: true,
+    component: 'Home',
+    exibirAlerta: false
   }),
-  methods: {
-    desmontarComponente() {
-      this.visibilidade = false
-    }
-  },
   components: {
     Conteudo,
-    TopoPadrao
+    TopoPadrao,
+    VagasFavoritas,
+    Alerta
+  },
+  mounted() {
+    this.emitter.on('alerta', () => {
+      this.exibirAlerta = true
+      setTimeout(() => this.exibirAlerta = false, 4000)
+      console.log('Apresentar a mensagem de alerta customizada')
+    })
   }
 }
 </script>
