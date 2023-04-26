@@ -6,7 +6,24 @@
       </div>
     </div>
 
-    <lista-vagas :vagas="vagas"/>
+    <lista-vagas>
+      
+      <!-- <template v-slot:titulo="slotProps">
+        {{ slotProps.dadosTitulo.titulo }}
+        <hr>
+      </template>
+
+      <template v-slot:default="slotProps">
+        {{ slotProps.vagas }}
+        <hr>
+      </template>
+
+      <template v-slot:rodape="slotProps">
+        {{ slotProps.dadosRodape.titulo }}
+        <hr>
+      </template> -->
+
+    </lista-vagas>
 
     <div class="row mt-5">
       <div class="col-4">
@@ -38,7 +55,6 @@ export default {
   },
   data: () => ({
     usuariosOnline: 0,
-    vagas: []
   }),
   methods: {
     getUsuariosOnline() {
@@ -47,15 +63,6 @@ export default {
   },
   created() {
     setInterval(this.getUsuariosOnline, 5000)
-  },
-  activated() {
-    this.vagas = JSON.parse(localStorage.getItem('vagas'))
-  },
-  mounted() {
-    this.emitter.on('filtrarVagas', vaga => {
-      const vagas = JSON.parse(localStorage.getItem('vagas'));
-      this.vagas = vagas.filter(reg => reg.titulo.toLowerCase().includes(vaga.titulo.toLowerCase()))
-    })
   }
 }
 </script>
